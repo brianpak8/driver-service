@@ -65,11 +65,10 @@ const vehicles = {
 const letters = ['A', 'B', 'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-const capacities = [2, 4, 5, 6, 7];
+const capacities = [1, 4, 6];
 
 function seedVehicles(num) {
   for (let i = 0; i < num; i++) {
-    // let color = colors[Math.floor(Math.random() * 10)];
     let makeKey = Math.floor(Math.random() * 14).toString();
     let make = Object.keys(vehicles[makeKey])[0];
     let model = vehicles[makeKey][make][(Math.floor(Math.random() * vehicles[makeKey][make].length))];
@@ -101,3 +100,36 @@ function seedVehicles(num) {
   }
 }
 seedVehicles(1000);
+
+function seedJoin () {
+  const round1 = [];
+  const round2 = [];
+  const round3 = [];
+  const round4 = [];
+  const round5 = [];
+  const round6 = [];
+  const round7 = [];
+  const round8 = [];
+  const round9 = [];
+  const round10 = [];
+
+  for (let i = 1; i < 100000; i++) {
+    round1.push(i);
+  }
+  for (let i = 1; i < round1.length; i++) {
+    round2.push(i + 100000);
+    round3.push(i + 200000);
+    round4.push(i + 300000);
+    round5.push(i + 400000);
+    round6.push(i + 500000);
+    round7.push(i + 600000);
+    round8.push(i + 700000);
+    round9.push(i + 800000);
+    round10.push(i + 900000);
+  }
+  let index1 = Math.floor(Math.random() * 10);
+  let index2 = Math.floor(Math.random() * 10);
+  let index11 = Math.floor(Math.random() * round1.length);
+  let index22 = Math.floor(Math.random() * round1.length);
+
+}

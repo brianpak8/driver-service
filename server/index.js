@@ -13,18 +13,19 @@ const knex = require('knex')({
   }
 });
 
-// client login that changes status of driver
-app.post('/api/v1/login', (req, res) => {
-
-});
 
 // pricing service requests for current number of drivers available
 app.get('/api/v1/drivers/count', (req, res) => {
+  knex.select().table('available_rides')
+    .then((data) => {
+      console.log('EVIL SPIRIT', data.length);
+      res.end(data.length);
+    })
 
 });
 
 // booking service requests for driver data to match with riders
-app.get('/api/v1/available/drivers', (req, res) => {
+app.get('/api/v1/drivers/available', (req, res) => {
 
 });
 
@@ -39,9 +40,17 @@ app.post('/api/v1/cancel', (req, res) => {
 });
 
 //  client request to end a ride and reset status
-app.post('/api/v1/end/ride', (req, res) => {
+app.post('/api/v1/ride/end', (req, res) => {
 
 });
+
+
+// client login that changes status of driver
+app.post('/api/v1/login', (req, res) => {
+
+});
+
+
 
 // client request to reset status and end session
 app.post('/api/v1/logout', (req, res) => {
