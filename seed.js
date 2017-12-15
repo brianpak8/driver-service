@@ -8,15 +8,9 @@ const knex = require('knex')({
   }
 });
 
-// console.log(faker.date.past(20), typeof(faker.date.past(20)));
-// console.log(JSON.stringify(faker.date.past(20)));
-// console.log(JSON.stringify(faker.date.past(20)).slice(0, 5));
-console.log(parseInt(JSON.stringify(faker.date.past(20)).slice(1, 5)));
-
-
 const help = 'HELPPPPPPPPPPPPPPPPPPPPP';
 console.log(help.length);
-let count = 1;
+let count = -100000000;
 function seedDrivers () {
   for (let i = 0; i < 75000; i++) {
     let firstName = faker.name.firstName();
@@ -25,7 +19,7 @@ function seedDrivers () {
     let password = faker.internet.password(8);
     let number = faker.phone.phoneNumberFormat(1);
     let imageUrl = faker.image.imageUrl();
-    let rating = Math.round((Math.random() + 4) * 100) / 100;
+    let rating = Math.round((Math.random() + 4) * 10) / 10;
     knex(`drivers`).insert({
       first_name: `${firstName}`,
       last_name: `${lastName}`,
@@ -38,11 +32,8 @@ function seedDrivers () {
     })
     .then((data) => {
       count ++;
-      //console.log('inserted!!!!');
     })
-
   }
-
 };
 function run (num = 1) {
   for (let i = 0; i < num; i++) {
@@ -64,9 +55,12 @@ const vehicles = {
   5: {BMW: ['328i', '330i', '335i', 'X3', 'X5']},
   6: {Nissan: ['Altima', 'Maxima', 'Pathfinder', 'Sentra', 'Rogue']},
   7: {Hyundai: ['Elantra', 'Genesis', 'Sonata', 'Santa Fe']},
-  8: {Mazda: ['3', '5']},
-  9: {Dodge: ['Charger', 'Challenger']},
-  10: {Volkswagen: ['Beetle', 'Golf', 'Passat', 'Jetta', 'Tiguan']}
+  8: {Mazda: ['3', '5', 'CX-5', 'CX-3']},
+  9: {Dodge: ['Charger', 'Challenger', 'Grand Caravan', 'Durango']},
+  10: {Volkswagen: ['Beetle', 'Golf', 'Passat', 'Jetta', 'Tiguan']},
+  11: {Jeep: ['Wrangler', 'Liberty', 'Compass', 'Grand Cherokee', 'Renegade']},
+  12: {'Mercedes-Benz': ['C 300', 'C 350', 'GLA 250']},
+  13: {Lexus: ['IS 250', 'IS 350', 'ES 350', 'RX']},
 }
 const letters = ['A', 'B', 'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -76,7 +70,7 @@ const capacities = [2, 4, 5, 6, 7];
 function seedVehicles(num) {
   for (let i = 0; i < num; i++) {
     // let color = colors[Math.floor(Math.random() * 10)];
-    let makeKey = Math.floor(Math.random() * 11).toString();
+    let makeKey = Math.floor(Math.random() * 14).toString();
     let make = Object.keys(vehicles[makeKey])[0];
     let model = vehicles[makeKey][make][(Math.floor(Math.random() * vehicles[makeKey][make].length))];
     let color = colors[Math.floor(Math.random() * colors.length)];
@@ -87,7 +81,7 @@ function seedVehicles(num) {
     numbers[Math.floor(Math.random() * numbers.length)] +
     numbers[Math.floor(Math.random() * numbers.length)] +
     numbers[Math.floor(Math.random() * numbers.length)];
-    let year = parseInt(JSON.stringify(faker.date.past(20)).slice(1, 5));
+    let year = parseInt(JSON.stringify(faker.date.past(10)).slice(1, 5));
     let imageUrl = faker.image.imageUrl();
     let capacity = capacities[Math.floor(Math.random() * capacities.length)];
 
@@ -106,5 +100,4 @@ function seedVehicles(num) {
     })
   }
 }
-
 seedVehicles(1000);
