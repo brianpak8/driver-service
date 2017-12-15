@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const axios = require('axios');
+const faker = require('faker');
 // const db = require('./dbconnection.js');
 // const db2 = require('./queries.js');
 const knex = require('knex')({
@@ -18,7 +19,7 @@ app.post('/api/v1/login', (req, res) => {
 });
 
 // pricing service requests for current number of drivers available
-app.get('/api/v1/available', (req, res) => {
+app.get('/api/v1/drivers/count', (req, res) => {
 
 });
 
@@ -51,15 +52,48 @@ app.post('/api/v1/logout', (req, res) => {
 
 // just a test
 app.get('/', (req, res) => {
-  console.log('test, test, test');
-  //console.log('!!!!!!!!!', typeof db, '-------', db);
-  console.log('before db connection');
-  //db2();
-  knex.select().table('drivers')
+  // knex(`drivers`).insert({
+  //   first_name: 'peter'
+  // });
+  for (let i = 0; i < 1500000; i++) {
+    let firstName = faker.name.firstName();
+    let lastName = faker.name.lastName();
+    knex(`drivers`).insert({
+      first_name: `${firstName}`,
+      last_name: `${lastName}`
+    })
     .then((data) => {
-      console.log(data);
-    });
-  console.log('after db connection');
+      //console.log('inserted!!!!');
+    })
+
+  }
+  // console.log('test, test, test');
+  // //console.log('!!!!!!!!!', typeof db, '-------', db);
+  // console.log('before db connection');
+  // //db2();
+  // knex.select().table('drivers')
+  //   .then((data) => {
+  //     console.log(data);
+  //   });
+  // knex.select().table('vehicles')
+  //   .then((data) => {
+  //     console.log(data);
+  //   });
+  // knex.select().table('drivers_vehicles')
+  //   .then((data) => {
+  //     console.log(data);
+  //   });
+  // knex.select().table('available_rides')
+  //   .then((data) => {
+  //     console.log(data);
+  //   });
+  // knex('available_rides').where({
+  //   status: 1
+  // }).select('id')
+  // .then((data) => {
+  //   console.log('HEY', data);
+  // });
+  // console.log('after db connection');
   // db.connection.query('select * from drivers', (err, rows, fields) => {
   //   console.log(Array.isArray(rows), '123456789', rows[1]);
   // });
@@ -67,6 +101,7 @@ app.get('/', (req, res) => {
   //   console.log('data', typeof data, '----', data);
   // });
 
+//res.send();
 });
 
 app.listen(9100, () => {
