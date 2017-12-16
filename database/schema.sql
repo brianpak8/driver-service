@@ -51,22 +51,22 @@ ALTER TABLE `drivers_vehicles` ADD FOREIGN KEY (`vehicle_id`) REFERENCES `vehicl
 ALTER TABLE `available_rides` ADD FOREIGN KEY (`driver_vehicle_id`) REFERENCES `drivers_vehicles` (`id`);
 
 
--- INSERT INTO drivers (first_name, last_name) VALUES ('Allen', 'Price');
--- INSERT INTO drivers (first_name, last_name) VALUES ('Beth', 'Johnson');
--- INSERT INTO drivers (first_name, last_name) VALUES ('Doug', 'Calhoun');
--- INSERT INTO drivers (first_name, last_name) VALUES ('Easak', 'Hong');
---
--- INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('5ABC678', 'Toyota', 'Camry', 'white', 2011);
--- INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('1ZYX234', 'BMW', 'X5', 'white', 2015);
--- INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('6RPS789', 'Ford', 'Fusion', 'red', 2009);
--- INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('3TEA480', 'Nissan', 'Altima', 'blue', 2014);
---
--- INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (1, 1);
--- INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (2, 3);
--- INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (3, 2);
--- INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (4, 4);
---
--- INSERT INTO available_rides (driver_vehicle_id, status, current_ride_id, type, latitude, longitude) VALUES (1, 1, 653, 'uber', 123.5768432, 54.8293202);
--- INSERT INTO available_rides (driver_vehicle_id, status, type) VALUES (2, 0, 'uber');
--- INSERT INTO available_rides (driver_vehicle_id, status, current_ride_id, type) VALUES (3, 1, 477, 'xl');
--- INSERT INTO available_rides (driver_vehicle_id, status, type) VALUES (4, 1, 'black');
+INSERT INTO drivers (first_name, last_name) VALUES ('Allen', 'Price');
+INSERT INTO drivers (first_name, last_name) VALUES ('Beth', 'Johnson');
+INSERT INTO drivers (first_name, last_name) VALUES ('Doug', 'Calhoun');
+INSERT INTO drivers (first_name, last_name) VALUES ('Easak', 'Hong');
+
+INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('5ABC678', 'Toyota', 'Camry', 'white', 2011);
+INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('1ZYX234', 'BMW', 'X5', 'white', 2015);
+INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('6RPS789', 'Ford', 'Fusion', 'red', 2009);
+INSERT INTO vehicles (license_plate, make, model, color, year) VALUES ('3TEA480', 'Nissan', 'Altima', 'blue', 2014);
+
+INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (1, 1);
+INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (2, 3);
+INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (3, 2);
+INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (4, 4);
+
+INSERT INTO available_rides (driver_vehicle_id, status, current_ride_id, type, latitude, longitude) VALUES (1, 1, 653, 'uber', 123.5768432, 54.8293202);
+INSERT INTO available_rides (driver_vehicle_id, status, type) VALUES (2, 0, 'uber');
+INSERT INTO available_rides (driver_vehicle_id, status, current_ride_id, type) VALUES (3, 1, 477, 'xl');
+INSERT INTO available_rides (driver_vehicle_id, status, type) VALUES (4, 1, 'black');
