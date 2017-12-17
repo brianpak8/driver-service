@@ -37,11 +37,12 @@ CREATE TABLE `drivers_vehicles` (
 CREATE TABLE `available_rides` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `driver_vehicle_id` INT,
+  `driver_id` INT,
+  `vehicle_id` INT,
   `status` BOOL,
-  `latitude` DOUBLE,
-  `longitude` DOUBLE,
   `current_ride_id` INT,
   `type` VARCHAR (25),
+  `location` VARCHAR (150),
   PRIMARY KEY (`id`)
 );
 
@@ -66,7 +67,7 @@ INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (2, 3);
 INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (3, 2);
 INSERT INTO drivers_vehicles (driver_id, vehicle_id) VALUES (4, 4);
 
-INSERT INTO available_rides (driver_vehicle_id, status, current_ride_id, type, latitude, longitude) VALUES (1, 1, 653, 'uber', 123.5768432, 54.8293202);
-INSERT INTO available_rides (driver_vehicle_id, status, type) VALUES (2, 0, 'uber');
-INSERT INTO available_rides (driver_vehicle_id, status, current_ride_id, type) VALUES (3, 1, 477, 'xl');
-INSERT INTO available_rides (driver_vehicle_id, status, type) VALUES (4, 1, 'black');
+INSERT INTO available_rides (driver_id, vehicle_id, driver_vehicle_id, status, current_ride_id, type) VALUES (1, 3, 1, 1, 653, 'uber');
+INSERT INTO available_rides (driver_id, vehicle_id,driver_vehicle_id, status, type) VALUES (2, 1, 2, 0, 'uber');
+INSERT INTO available_rides (driver_id, vehicle_id,driver_vehicle_id, status, current_ride_id, type) VALUES (3, 4, 3, 1, 477, 'xl');
+INSERT INTO available_rides (driver_id, vehicle_id,driver_vehicle_id, status, type) VALUES (4, 2, 4, 1, 'black');

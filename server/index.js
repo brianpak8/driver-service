@@ -3,7 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const faker = require('faker');
-// const db = require('./dbconnection.js');
+const promise = require('bluebird');
+const db = require('./dbconnection.js');
 // const db2 = require('./queries.js');
 const knex = require('knex')({
   client: 'mysql',
@@ -30,74 +31,119 @@ app.get('/api/v1/drivers/count', (req, res) => {
 
 // booking service requests for driver data to match with riders
 app.get('/api/v1/drivers/available', (req, res) => {
-  const drivers = [];
-  const vehicles = [];
-  const driversToSend = [];
-  const vehiclesToSend = [];
+  // Knex('aps')
+  //       .select()
+  //       .innerJoin('wlcs','aps.wlc_id','=','wlc.id')
+  //       .innerJoin('switchs','aps.switch_id','=','switch.id')
+  //       .innerJoin('venues','aps.venue_name','=','venue.name')
+  //       .where(Qu)
+  //       .debug(true)
+  //       .then(function (resultCol){
+  //            console.log("resultCol",resultCol);
+  //       })
+  //       .catch(function (err){
+  //           console.log("Err",err);
+  //       });
 
-  knex.select().table('available_rides')
+
+  knex('available_rides')
+    .innerJoin('drivers', 'available_rides.driver_id', '=', 'drivers.id')
+    .innerJoin('vehicles', 'available_rides.vehicle_id', '=', 'vehicles.id')
+    .select()
     .then((data) => {
-      data.forEach((driver) => {
-        // drivers.push(driver);
-        console.log('1111111111111111111', driver.driver_vehicle_id);
-        knex('drivers_vehicles').where({id: driver.driver_vehicle_id})
-          .then((driverProfiles) => {
-            console.log('2222222222222222222', driverProfiles);
-            driverProfiles.forEach((driverProfile) => {
-              console.log('3333333333333333333', driverProfile.driver_id);
-               //drivers.push(driverProfile);
-              knex('drivers').where({
-                id: driverProfile.driver_id
-              })
-                .then((driverToSend) => {
-                  console.log('444444444444444444', driverToSend);
-                  drivers.push(driverToSend);
-                  console.log('5555555555555', drivers);
-                })
-            })
-          })
-          console.log('got here ^^^^^^^^^^^^^^^^^^^');
-      });
-      console.log('got to here  $$$$$$$$$$$$$$');
-      data.forEach((vehicle) => {
-        console.log('666666666666', vehicle);
-        knex('drivers_vehicles').where({id: vehicle.driver_vehicle_id})
-          .then((vehicleProfiles) => {
-            vehicleProfiles.forEach((vehicleProfile) => {
-              console.log('777777777777777777', vehicleProfile);
-              // vehicles.push(vehicleProfile);
-              knex('vehicles').where({
-                id: vehicleProfile.vehicle_id
-              })
-                .then((vehicleToSend) => {
-                  vehicles.push(vehicleToSend);
-                  console.log('88888888888888888', vehicles);
-                })
-            })
-          })
-      });
+      console.log(data);
     })
-    .then(() => {
-      drivers.forEach((arrayRecord) => {
-        let obj = arrayRecord[0];
-        driversToSend.push(obj);
-      });
-      vehicles.forEach((vehicleRecord) => {
-        let obj = vehicleRecord[0];
-        vehicleToSend.push(obj);
-      });
-      console.log('999999999999999999999', driversToSend);
-      const ObjToSend = {
-        drivers: driversToSend,
-        vehicles: vehiclesToSend
-      }
-      console.log('YEAHHHHHHHH BOYYYYYYYYYY', JSON.stringify(ObjToSend));
-      res.end(JSON.stringify(ObjToSend));
-    })
-    .catch((err) => {
-      console.err();
-      throw err;
-    })
+
+  // knex.select().table('available_rides')
+  //   .then((data) => {
+  //     data.forEach((record) => {
+  //       knex.from('drivers').innerJoin('vehicles')
+  //     })
+  //   })
+
+
+
+  // const drivers = [];
+  // const vehicles = [];
+  // const driversToSend = [];
+  // const vehiclesToSend = [];
+  //
+  // // let firstQuery = knex.select().table('available_rides');
+  // //
+  // // // firstQuery.then((data) => {
+  // // //   data.forEach((record) => {
+  // // //     knex('drivers_vehicles').where({id: driver.driver_vehicle_id});
+  // // //   })
+  // // // })
+  // //
+  //
+  // console.time("test");
+  //
+  // knex.select().table('available_rides')
+  //   .then((data) => {
+  //     data.forEach((driver) => {
+  //       // drivers.push(driver);
+  //       console.log('1111111111111111111', driver.driver_vehicle_id);
+  //       return knex('drivers_vehicles').where({id: driver.driver_vehicle_id})
+  //         .then((driverProfiles) => {
+  //           console.log('2222222222222222222', driverProfiles);
+  //           driverProfiles.forEach((driverProfile) => {
+  //             console.log('3333333333333333333', driverProfile.driver_id);
+  //              //drivers.push(driverProfile);
+  //             return knex('drivers').where({
+  //               id: driverProfile.driver_id
+  //             })
+  //               .then((driverToSend) => {
+  //                 console.log('444444444444444444', driverToSend);
+  //                 drivers.push(driverToSend);
+  //                 console.log('5555555555555', drivers);
+  //               })
+  //           })
+  //         })
+  //         console.log('got here ^^^^^^^^^^^^^^^^^^^');
+  //     });
+  //     console.log('got to here  $$$$$$$$$$$$$$');
+  //     data.forEach((vehicle) => {
+  //       console.log('666666666666', vehicle);
+  //       return knex('drivers_vehicles').where({id: vehicle.driver_vehicle_id})
+  //         .then((vehicleProfiles) => {
+  //           vehicleProfiles.forEach((vehicleProfile) => {
+  //             console.log('777777777777777777', vehicleProfile);
+  //             // vehicles.push(vehicleProfile);
+  //             return knex('vehicles').where({
+  //               id: vehicleProfile.vehicle_id
+  //             })
+  //               .then((vehicleToSend) => {
+  //                 vehicles.push(vehicleToSend);
+  //                 console.log('88888888888888888', vehicles);
+  //               })
+  //           })
+  //         })
+  //     });
+  //   })
+  //   .then(() => {
+  //     drivers.forEach((arrayRecord) => {
+  //       let obj = arrayRecord[0];
+  //       driversToSend.push(obj);
+  //     });
+  //     vehicles.forEach((vehicleRecord) => {
+  //       let obj = vehicleRecord[0];
+  //       vehicleToSend.push(obj);
+  //     });
+  //     console.log('999999999999999999999', driversToSend);
+  //     const ObjToSend = {
+  //       drivers: driversToSend,
+  //       vehicles: vehiclesToSend
+  //     }
+  //     console.log('YEAHHHHHHHH BOYYYYYYYYYY', JSON.stringify(ObjToSend));
+  //     console.timeEnd("test");
+  //     res.end(JSON.stringify(ObjToSend));
+  //
+  //   })
+  //   .catch((err) => {
+  //     console.err();
+  //     throw err;
+  //   })
 
 });
 
@@ -147,6 +193,8 @@ app.patch('/api/v1/cancel', (req, res) => {
 
 //  client request to end a ride and reset status
 app.patch('/api/v1/ride/end', (req, res) => {
+  let rideId = req.body.rideId;
+  let driver_vehicle_id = req.body.driver_vehicle_id;
 
 
 });
