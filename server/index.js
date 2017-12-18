@@ -5,15 +5,16 @@ const axios = require('axios');
 const faker = require('faker');
 const promise = require('bluebird');
 const db = require('./dbconnection.js');
+const query = require('./queries.js');
 // const db2 = require('./queries.js');
-const knex = require('knex')({
-  client: 'mysql',
-  connection: {
-    host: 'localhost',
-    user: 'root',
-    database: 'driverservice'
-  }
-});
+// const knex = require('knex')({
+//   client: 'mysql',
+//   connection: {
+//     host: 'localhost',
+//     user: 'root',
+//     database: 'driverservice'
+//   }
+// });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,21 +22,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // pricing service requests for current number of drivers available
 // tested
-app.get('/api/v1/drivers/count', (req, res) => {
+// app.get('/api/v1/drivers/count', (req, res) => {
+//
+//   db.knex.select().table('available_rides')
+//     .then((data) => {
+//       console.log('ahahahahahaah', data);
+//       res.end(JSON.stringify({count: data.length}));
+//     })
+//
+// });
 
-  knex.select().table('available_rides')
+app.get('/api/v1/drivers/count', (req, res) => {
+  console.log('is this undefined?', query.driverCount);
+  query.driverCount()
     .then((data) => {
-      console.log(data);
+      console.log('i am a teapot short and stout', data);
       res.end(JSON.stringify({count: data.length}));
     })
-
 });
 
 // booking service requests for driver data to match with riders
 // tested
 app.get('/api/v1/drivers/available', (req, res) => {
 
-  knex('available_rides')
+  db.knex('available_rides')
     .innerJoin('drivers', 'available_rides.driver_id', '=', 'drivers.id')
     .innerJoin('vehicles', 'available_rides.vehicle_id', '=', 'vehicles.id')
     .select()
@@ -47,11 +57,24 @@ app.get('/api/v1/drivers/available', (req, res) => {
 
 });
 
+// new route for drivers to update position
+app.patch('/api/v1/drivers/location', (req, res) => {
+  let driver = req.body.driverId;
+  let location = req.body.location;
+  db.knex('available_rides')
+    .where('driver_id', '=', driver)
+    .update({
+      location: location
+    })
+    .then(res.end());
+
+})
+
 //  booking service notification to change status of drivers after a match occurs
 app.post('/api/v1/ride', (req, res) => {
   let id = req.body.rideId;
   let driver = req.body.driverId;
-  knex('available_rides')
+  db.knex('available_rides')
     .where('driver_id', '=', id)
     .update({
       status: 1,
@@ -67,7 +90,7 @@ app.post('/api/v1/ride', (req, res) => {
 app.patch('/api/v1/cancel', (req, res) => {
   let rideId = req.body.rideId;
   let driver_vehicle_id = req.body.driver_vehicle_id;
-  knex('available_rides')
+  db.knex('available_rides')
     .where('current_ride_id', '=', rideId)
     .update({
       current_ride_id: null,
@@ -75,9 +98,11 @@ app.patch('/api/v1/cancel', (req, res) => {
     })
     .then((id) => {
       console.log('I made it this far');
-      axios.patch('/driverInfo', {
+      axios.patch('insertBookingendpointHere', {
         ride_id: rideId,
         driver_id: null,
+        driver_picture: null,
+        phone_number: null,
         make: null,
         model: null,
         color: null,
@@ -95,14 +120,19 @@ app.patch('/api/v1/cancel', (req, res) => {
 //  client request to end a ride and reset status
 app.patch('/api/v1/ride/end', (req, res) => {
   let rideId = req.body.rideId;
-  knex('available_rides')
+  db.knex('available_rides')
     .where('current_ride_id', '=', rideId)
     .update({
       current_ride_id: null,
       status: 0
     })
     .then((record) => {
-      res.end();
+      axios.patch('insertBookingEndpointHere', {
+        status: 0
+      })
+      .then((data) => {
+        res.end();
+      })
     })
 
 });
@@ -133,7 +163,7 @@ app.get('/', (req, res) => {
   for (let i = 0; i < 1500000; i++) {
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
-    knex(`drivers`).insert({
+    db.knex(`drivers`).insert({
       first_name: `${firstName}`,
       last_name: `${lastName}`
     })
