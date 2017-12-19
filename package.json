@@ -17,10 +17,8 @@
   },
   "homepage": "https://github.com/brianpak8/driver-service#readme",
   "dependencies": {
-    "artillery": "^1.6.0-12",
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
-    "bower": "^1.8.2",
     "chai": "^4.1.2",
     "express": "^4.16.2",
     "faker": "^4.1.0",
@@ -28,7 +26,6 @@
     "mocha": "^4.0.1",
     "mysql": "^2.15.0",
     "node": "^9.2.0",
-    "nodemon": "^1.12.5",
-    "supertest": "^3.0.0"
+    "nodemon": "^1.12.5"
   }
 }

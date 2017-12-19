@@ -12,9 +12,9 @@ const knex = require('knex')({
   }
 });
 
-module.exports.connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  database: 'driverservice'
-});
+// module.exports.connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   database: 'driverservice'
+// });
 module.exports.knex = knex;

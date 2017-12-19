@@ -1,4 +1,5 @@
 const db = require('./dbconnection.js');
+const axios = require('axios');
 
 const driverCount = () => db.knex.select().table('available_rides')
 
@@ -21,9 +22,23 @@ const assignRide = (driver, ride) => db.knex('available_rides')
     current_ride_id: ride
   })
 
+const cancelRide = (rideId, driver_vehicle_id) => db.knex('available_rides')
+  .where('current_ride_id', '=', rideId )
+  .update({
+    current_ride_id: null,
+    status: 0
+  })
 
+const endRide = (rideId) => db.knex('available_rides')
+  .where('current_ride_id', '=', rideId)
+  .update({
+    current_ride_id: null,
+    status: 0
+  })
 
 module.exports.driverCount = driverCount;
 module.exports.getDrivers = getDrivers;
 module.exports.updateLocation = updateLocation;
 module.exports.assignRide = assignRide;
+module.exports.cancelRide = cancelRide;
+module.exports.endRide = endRide;

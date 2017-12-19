@@ -6,6 +6,7 @@ const faker = require('faker');
 const promise = require('bluebird');
 const db = require('./dbconnection.js');
 const query = require('./queries.js');
+const request = require('./bookingrequests.js');
 
 
 app.use(bodyParser.json());
@@ -79,56 +80,79 @@ app.post('/api/v1/ride', (req, res) => {
 //
 // });
 
-app.patch('/api/v1/cancel', (req, res) => {
-  let rideId = req.body.rideId;
-  let driver_vehicle_id = req.body.driver_vehicle_id;
-  db.knex('available_rides')
-    .where('current_ride_id', '=', rideId)
-    .update({
-      current_ride_id: null,
-      status: 0
-    })
-    .then((id) => {
-      console.log('I made it this far');
-      // axios.patch('insertBookingendpointHere', {
-      //   ride_id: rideId,
-      //   driver_id: null,
-      //   driver_picture: null,
-      //   phone_number: null,
-      //   make: null,
-      //   model: null,
-      //   color: null,
-      //   picture: null,
-      //   license: null,
-      //   location: null
-      // })
-      //   .then((data) => {
-      //     res.end();
-      //   })
-      res.end();
-    })
-
-});
+  app.patch('/api/v1/cancel', (req, res) => {
+    let rideId = req.body.rideId;
+    let driver_vehicle_id = req.body.driver_vehicle_id;
+    query.cancelRide(rideId, driver_vehicle_id)
+      .then((record) => {
+        console.log('working');
+        request.cancelAndUpdate(req, res)
+      })
+  })
+// app.patch('/api/v1/cancel', (req, res) => {
+//   let rideId = req.body.rideId;
+//   let driver_vehicle_id = req.body.driver_vehicle_id;
+//   db.knex('available_rides')
+//     .where('current_ride_id', '=', rideId)
+//     .update({
+//       current_ride_id: null,
+//       status: 0
+//     })
+//     .then((id) => {
+//       console.log('I made it this far');
+//       axios.patch('insertBookingendpointHere', {
+//         ride_id: rideId,
+//         driver_id: null,
+//         driver_picture: null,
+//         phone_number: null,
+//         make: null,
+//         model: null,
+//         color: null,
+//         picture: null,
+//         license: null,
+//         location: null
+//       })
+//         .then((data) => {
+//           res.end();
+//         })
+//       res.end();
+//     })
+//
+// });
 
 //  client request to end a ride and reset status
+
 app.patch('/api/v1/ride/end', (req, res) => {
   let rideId = req.body.rideId;
-  db.knex('available_rides')
-    .where('current_ride_id', '=', rideId)
-    .update({
-      current_ride_id: null,
-      status: 0
-    })
-    .then((record) => {
-      axios.patch('insertBookingEndpointHere', {
-        status: 0
-      })
-      .then((data) => {
-        res.end();
-      })
-    })
+  let driverId = req.body.driverId;
+  query.endRide(rideId)
+  .then((record) => {
+    // console.log('got to this spot');
+    request.endRide(req, res);
+  })
 
-});
+})
+
+
+
+// app.patch('/api/v1/ride/end', (req, res) => {
+//   let rideId = req.body.rideId;
+//   db.knex('available_rides')
+//     .where('current_ride_id', '=', rideId)
+//     .update({
+//       current_ride_id: null,
+//       status: 0
+//     })
+//     .then((record) => {
+//       axios.patch('insertBookingEndpointHere', {
+//         status: 0
+//       })
+//       .then((data) => {
+//         res.end();
+//       })
+//     })
+//
+// });
 
 
 
