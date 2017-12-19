@@ -6,6 +6,9 @@ const faker = require('faker');
 const promise = require('bluebird');
 const db = require('./dbconnection.js');
 const query = require('./queries.js');
+const http = require('http');
+const request = require('request');
+
 // const db2 = require('./queries.js');
 // const knex = require('knex')({
 //   client: 'mysql',
@@ -33,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // });
 
 app.get('/api/v1/drivers/count', (req, res) => {
-  console.log('is this undefined?', query.driverCount);
+  // console.log('is this undefined?', query.driverCount);
   query.driverCount()
     .then((data) => {
       console.log('i am a teapot short and stout', data);
@@ -43,48 +46,81 @@ app.get('/api/v1/drivers/count', (req, res) => {
 
 // booking service requests for driver data to match with riders
 // tested
-app.get('/api/v1/drivers/available', (req, res) => {
+// app.get('/api/v1/drivers/available', (req, res) => {
+//
+//   db.knex('available_rides')
+//     .innerJoin('drivers', 'available_rides.driver_id', '=', 'drivers.id')
+//     .innerJoin('vehicles', 'available_rides.vehicle_id', '=', 'vehicles.id')
+//     .select()
+//     .where('status', 0)
+//     .then((data) => {
+//       console.log(data);
+//       res.end(JSON.stringify(data));
+//     })
+//
+// });
 
-  db.knex('available_rides')
-    .innerJoin('drivers', 'available_rides.driver_id', '=', 'drivers.id')
-    .innerJoin('vehicles', 'available_rides.vehicle_id', '=', 'vehicles.id')
-    .select()
-    .where('status', 0)
+app.get('/api/v1/drivers/available', (req, res) => {
+  query.getDrivers()
     .then((data) => {
-      console.log(data);
+      // console.log('look at the data ----->', data);
       res.end(JSON.stringify(data));
     })
-
-});
+})
 
 // new route for drivers to update position
+
 app.patch('/api/v1/drivers/location', (req, res) => {
   let driver = req.body.driverId;
   let location = req.body.location;
-  db.knex('available_rides')
-    .where('driver_id', '=', driver)
-    .update({
-      location: location
+  query.updateLocation(driver, location)
+    .then(() => {
+      res.end();
     })
-    .then(res.end());
-
 })
+// app.patch('/api/v1/drivers/location', (req, res) => {
+//   let driver = req.body.driverId;
+//   let location = req.body.location;
+//   db.knex('available_rides')
+//     .where('driver_id', '=', driver)
+//     .update({
+//       location: location
+//     })
+//     .then(res.end());
+//
+// })
 
 //  booking service notification to change status of drivers after a match occurs
+
+
 app.post('/api/v1/ride', (req, res) => {
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!', req.body);
   let id = req.body.rideId;
   let driver = req.body.driverId;
-  db.knex('available_rides')
-    .where('driver_id', '=', id)
-    .update({
-      status: 1,
-      current_ride_id: id
-    })
+  query.assignRide(driver, id)
     .then((id) => {
+      console.log(id);
       res.end(JSON.stringify(id));
     })
+    .catch((err) => {
+      console.log(err);
+    })
+})
 
-});
+// app.post('/api/v1/ride', (req, res) => {
+//   let id = req.body.rideId;
+//   let driver = req.body.driverId;
+//   db.knex('available_rides')
+//     .where('driver_id', '=', driver)
+//     .update({
+//       status: 1,
+//       current_ride_id: id
+//     })
+//     .then((driverRecord) => {
+//       res.end(JSON.stringify(driverRecord));
+//     })
+//
+// });
 
 
 app.patch('/api/v1/cancel', (req, res) => {
@@ -209,10 +245,37 @@ app.get('/', (req, res) => {
 //res.send();
 });
 
+
 app.listen(9100, () => {
   console.log('listening on port 9100');
 });
 
+// request({
+//   uri: '127.0.0.1:9100/api/v1/ride',
+//   method: 'POST',
+//   form: {
+//     driverId: 2,
+//     rideId: 5
+//   }
+// }, function(err, response, body) {
+//   if (err) {
+//
+//     console.log('this is an error', err);
+//   } else {
+//
+//     console.log('this is the response', response);
+//     console.log('this is the body', body);
+//   }
+// })
+// axios.post('localhost:9100/api/v1/ride', {
+//   rideId: 5,
+// driverId: 2})
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   })
 
 /* advice form beth: use faker (npm)
 random data generator for cars
