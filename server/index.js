@@ -37,6 +37,7 @@ app.get('/api/v1/drivers/available', (req, res) => {
 })
 
 // new route for drivers to update position
+// tested
 
 app.patch('/api/v1/drivers/location', (req, res) => {
   let driver = req.body.driverId;
@@ -49,7 +50,7 @@ app.patch('/api/v1/drivers/location', (req, res) => {
 })
 
 //  booking service notification to change status of drivers after a match occurs
-
+//  tested
 
 app.post('/api/v1/ride', (req, res) => {
   console.log('!!!!!!!!!!!!!!!!!!!!!!!', req.body);
@@ -65,21 +66,8 @@ app.post('/api/v1/ride', (req, res) => {
     })
 })
 
-// app.post('/api/v1/ride', (req, res) => {
-//   let id = req.body.rideId;
-//   let driver = req.body.driverId;
-//   db.knex('available_rides')
-//     .where('driver_id', '=', driver)
-//     .update({
-//       status: 1,
-//       current_ride_id: id
-//     })
-//     .then((driverRecord) => {
-//       res.end(JSON.stringify(driverRecord));
-//     })
-//
-// });
-
+//  client(driver) request to cancel a ride
+//  tested, but request to booking needs a correct endpoint
   app.patch('/api/v1/cancel', (req, res) => {
     let rideId = req.body.rideId;
     let driver_vehicle_id = req.body.driver_vehicle_id;
@@ -89,38 +77,9 @@ app.post('/api/v1/ride', (req, res) => {
         request.cancelAndUpdate(req, res)
       })
   })
-// app.patch('/api/v1/cancel', (req, res) => {
-//   let rideId = req.body.rideId;
-//   let driver_vehicle_id = req.body.driver_vehicle_id;
-//   db.knex('available_rides')
-//     .where('current_ride_id', '=', rideId)
-//     .update({
-//       current_ride_id: null,
-//       status: 0
-//     })
-//     .then((id) => {
-//       console.log('I made it this far');
-//       axios.patch('insertBookingendpointHere', {
-//         ride_id: rideId,
-//         driver_id: null,
-//         driver_picture: null,
-//         phone_number: null,
-//         make: null,
-//         model: null,
-//         color: null,
-//         picture: null,
-//         license: null,
-//         location: null
-//       })
-//         .then((data) => {
-//           res.end();
-//         })
-//       res.end();
-//     })
-//
-// });
 
 //  client request to end a ride and reset status
+//  tested but needs a correct endpoint
 
 app.patch('/api/v1/ride/end', (req, res) => {
   let rideId = req.body.rideId;
@@ -132,29 +91,6 @@ app.patch('/api/v1/ride/end', (req, res) => {
   })
 
 })
-
-
-
-// app.patch('/api/v1/ride/end', (req, res) => {
-//   let rideId = req.body.rideId;
-//   db.knex('available_rides')
-//     .where('current_ride_id', '=', rideId)
-//     .update({
-//       current_ride_id: null,
-//       status: 0
-//     })
-//     .then((record) => {
-//       axios.patch('insertBookingEndpointHere', {
-//         status: 0
-//       })
-//       .then((data) => {
-//         res.end();
-//       })
-//     })
-//
-// });
-
-
 
 
 //
@@ -258,6 +194,6 @@ app.listen(9100, () => {
 //     console.log(err);
 //   })
 
-/* advice form beth: use faker (npm)
+/* advice from beth: use faker (npm)
 random data generator for cars
 */
