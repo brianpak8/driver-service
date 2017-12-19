@@ -6,18 +6,7 @@ const faker = require('faker');
 const promise = require('bluebird');
 const db = require('./dbconnection.js');
 const query = require('./queries.js');
-const http = require('http');
-const request = require('request');
 
-// const db2 = require('./queries.js');
-// const knex = require('knex')({
-//   client: 'mysql',
-//   connection: {
-//     host: 'localhost',
-//     user: 'root',
-//     database: 'driverservice'
-//   }
-// });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,15 +14,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // pricing service requests for current number of drivers available
 // tested
-// app.get('/api/v1/drivers/count', (req, res) => {
-//
-//   db.knex.select().table('available_rides')
-//     .then((data) => {
-//       console.log('ahahahahahaah', data);
-//       res.end(JSON.stringify({count: data.length}));
-//     })
-//
-// });
 
 app.get('/api/v1/drivers/count', (req, res) => {
   // console.log('is this undefined?', query.driverCount);
@@ -46,19 +26,6 @@ app.get('/api/v1/drivers/count', (req, res) => {
 
 // booking service requests for driver data to match with riders
 // tested
-// app.get('/api/v1/drivers/available', (req, res) => {
-//
-//   db.knex('available_rides')
-//     .innerJoin('drivers', 'available_rides.driver_id', '=', 'drivers.id')
-//     .innerJoin('vehicles', 'available_rides.vehicle_id', '=', 'vehicles.id')
-//     .select()
-//     .where('status', 0)
-//     .then((data) => {
-//       console.log(data);
-//       res.end(JSON.stringify(data));
-//     })
-//
-// });
 
 app.get('/api/v1/drivers/available', (req, res) => {
   query.getDrivers()
@@ -74,21 +41,11 @@ app.patch('/api/v1/drivers/location', (req, res) => {
   let driver = req.body.driverId;
   let location = req.body.location;
   query.updateLocation(driver, location)
-    .then(() => {
+    .then((data) => {
+      console.log('ahahahahahahahaahahaha', data);
       res.end();
     })
 })
-// app.patch('/api/v1/drivers/location', (req, res) => {
-//   let driver = req.body.driverId;
-//   let location = req.body.location;
-//   db.knex('available_rides')
-//     .where('driver_id', '=', driver)
-//     .update({
-//       location: location
-//     })
-//     .then(res.end());
-//
-// })
 
 //  booking service notification to change status of drivers after a match occurs
 
@@ -122,7 +79,6 @@ app.post('/api/v1/ride', (req, res) => {
 //
 // });
 
-
 app.patch('/api/v1/cancel', (req, res) => {
   let rideId = req.body.rideId;
   let driver_vehicle_id = req.body.driver_vehicle_id;
@@ -134,21 +90,22 @@ app.patch('/api/v1/cancel', (req, res) => {
     })
     .then((id) => {
       console.log('I made it this far');
-      axios.patch('insertBookingendpointHere', {
-        ride_id: rideId,
-        driver_id: null,
-        driver_picture: null,
-        phone_number: null,
-        make: null,
-        model: null,
-        color: null,
-        picture: null,
-        license: null,
-        location: null
-      })
-        .then((data) => {
-          res.end();
-        })
+      // axios.patch('insertBookingendpointHere', {
+      //   ride_id: rideId,
+      //   driver_id: null,
+      //   driver_picture: null,
+      //   phone_number: null,
+      //   make: null,
+      //   model: null,
+      //   color: null,
+      //   picture: null,
+      //   license: null,
+      //   location: null
+      // })
+      //   .then((data) => {
+      //     res.end();
+      //   })
+      res.end();
     })
 
 });
