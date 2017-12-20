@@ -9,43 +9,48 @@ const knex = require('knex')({
 });
 
 console.time('start');
-
+// 10085777
 // const help = 'HELPPPPPPPPPPPPPPPPPPPPP';
 // console.log(help.length);
 let count = -100000000;
-function seedDrivers (num) {
-  let promises = [];
+// function seedDrivers (num) {
+//   let promises = [];
+//
+//   for (let i = 0; i < num; i++) {
+//     let firstName = faker.name.firstName();
+//     let lastName = faker.name.lastName();
+//     let email = faker.internet.email();
+//     let password = faker.internet.password(8);
+//     let number = faker.phone.phoneNumberFormat(1);
+//     let imageUrl = faker.image.imageUrl();
+//     let rating = Math.round((Math.random() + 4) * 10) / 10;
+//
+//     let promise = knex(`drivers`).insert({
+//       first_name: `${firstName}`,
+//       last_name: `${lastName}`,
+//       email: `${email}`,
+//       password: `${password}`,
+//       phone_number: `${number}`,
+//       picture: `${imageUrl}`,
+//       rating: `${rating}`
+//
+//     });
+//     promises.push(promise);
+//     // .then((data) => {
+//     //   count ++;
+//     // })
+//   }
+//   return Promise.all(promises);
+// };
+// // seedDrivers(50000).then((data) => {
+// //   console.timeEnd('start');
+// //   count++;
+// // });
+// seedDrivers(12000).then((data) => {
+//   console.timeEnd('start');
+//   count++;
+// });
 
-  for (let i = 0; i < num; i++) {
-    let firstName = faker.name.firstName();
-    let lastName = faker.name.lastName();
-    let email = faker.internet.email();
-    let password = faker.internet.password(8);
-    let number = faker.phone.phoneNumberFormat(1);
-    let imageUrl = faker.image.imageUrl();
-    let rating = Math.round((Math.random() + 4) * 10) / 10;
-
-    let promise = knex(`drivers`).insert({
-      first_name: `${firstName}`,
-      last_name: `${lastName}`,
-      email: `${email}`,
-      password: `${password}`,
-      phone_number: `${number}`,
-      picture: `${imageUrl}`,
-      rating: `${rating}`
-
-    });
-    promises.push(promise);
-    // .then((data) => {
-    //   count ++;
-    // })
-  }
-  return Promise.all(promises);
-};
-seedDrivers(150000).then((data) => {
-  console.timeEnd('start');
-  count++;
-});
 // function run (num = 1) {
 //   for (let i = 0; i < num; i++) {
 //     seedDrivers();
@@ -55,7 +60,7 @@ seedDrivers(150000).then((data) => {
 // run(2);
 //
 // console.log('done');
-//
+
 // const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'white', 'black', 'grey', 'silver'];
 // const vehicles = {
 //   0: {Toyota: ['Camry', 'Corolla', 'Prius', 'Sienna', 'Highlander', 'Rav4']},
@@ -110,8 +115,7 @@ seedDrivers(150000).then((data) => {
 //     })
 //   }
 // }
-// seedVehicles(10000);
-console.timeEnd('start');
+// seedVehicles(130000);
 //
 // function seedJoin () {
 //   const round1 = [];
@@ -146,31 +150,112 @@ console.timeEnd('start');
 //
 // }
 
-
-
-
 // function seedJoinTable () {
-//   //  need to generate random number for driverIds
-//   //  need to generate random number for vehicleIds
-//   const array = [];
 //   for (let i = 0; i < 10000000; i++) {
 //     array.push(i);
 //   }
-//   // console.log(array);
 //   for (let i = 0; i < 100000; i++) {
-//     let driverIdx = Math.floor(Math.random() * 10000000);
-//     let vehicleIdx = Math.floor(Math.random() * 10000000);
-//     knex('drivers_vehicles').insert({
-//       driver_id: driverIdx,
-//       vehicle_id: vehicleIdx
-//     })
+//     let idx = Math.floor(Math.random() * 4);
+//     if (idx === 2) {
+//       let driverIdx = Math.floor(Math.random() * 1000);
+//       let vehicleIdx = Math.floor(Math.random() * 11300);
+//       knex('drivers_vehicles').insert({
+//         driver_id: driverIdx,
+//         vehicle_id: vehicleIdx
+//       })
 //       .then((data) => {
 //         count += 0;
 //       })
+//
+//     } else if (idx === 1) {
+//       let driverIdx = Math.floor(Math.random() * 100000);
+//       let vehicleIdx = Math.floor(Math.random() * 108000);
+//       knex('drivers_vehicles').insert({
+//         driver_id: driverIdx,
+//         vehicle_id: vehicleIdx
+//       })
+//       .then((data) => {
+//         count += 0;
+//       })
+//     } else {
+//       let driverIdx = Math.floor(Math.random() * 10300000);
+//       let vehicleIdx = Math.floor(Math.random() * 10100000);
+//       knex('drivers_vehicles').insert({
+//         driver_id: driverIdx,
+//         vehicle_id: vehicleIdx
+//       })
+//       .then((data) => {
+//         count += 0;
+//       })
+//
+//     }
 //   }
-//
-//
-//
-//
 // }
-// seedJoinTable();
+
+function seedJoinTable () {
+  //  need to generate random number for driverIds
+  //  need to generate random number for vehicleIds
+  const array = [];
+  for (let i = 0; i < 10000000; i++) {
+    array.push(i);
+  }
+  const lowerArr = array.slice(0, 1000);
+  const slightlyLarger = array.slice(1000, 100000);
+
+  // console.log(array);
+  for (let i = 0; i < 120000; i++) {
+    let driverIdx = Math.floor(Math.random() * 10000000);
+    let vehicleIdx = Math.floor(Math.random() * 10000000);
+    knex('drivers_vehicles').insert({
+      driver_id: driverIdx,
+      vehicle_id: vehicleIdx
+    })
+      .then((data) => {
+        count += 0;
+      })
+  }
+}
+
+/*
+// for small indexes
+function seedJoinTable () {
+  //  need to generate random number for driverIds
+  //  need to generate random number for vehicleIds
+  const array = [];
+  for (let i = 0; i < 10000000; i++) {
+    array.push(i);
+  }
+  const lowerArr = array.slice(0, 1000);
+  const slightlyLarger = array.slice(1000, 100000);
+
+  // console.log(array);
+  for (let i = 0; i < 120000; i++) {
+    let idx = Math.floor(Math.random(10));
+    if (idx <= 3) {
+      var driverIdx = Math.floor(Math.random() * 1000);
+      var vehicleIdx = Math.floor(Math.random() * 1000);
+      knex('drivers_vehicles').insert({
+        driver_id: driverIdx,
+        vehicle_id: vehicleIdx
+      })
+        .then((data) => {
+          count += 0;
+        })
+    } else {
+      var driverIdx = Math.floor(Math.random() * 10000000);
+      var vehicleIdx = Math.floor(Math.random() * 10000000);
+    }
+    knex('drivers_vehicles').insert({
+      driver_id: driverIdx,
+      vehicle_id: vehicleIdx
+    })
+      .then((data) => {
+        count += 0;
+      })
+  }
+}
+*/
+seedJoinTable();
+
+
+console.timeEnd('start');
