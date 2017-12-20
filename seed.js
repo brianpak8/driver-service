@@ -8,11 +8,15 @@ const knex = require('knex')({
   }
 });
 
-const help = 'HELPPPPPPPPPPPPPPPPPPPPP';
-console.log(help.length);
+console.time('start');
+
+// const help = 'HELPPPPPPPPPPPPPPPPPPPPP';
+// console.log(help.length);
 let count = -100000000;
-function seedDrivers () {
-  for (let i = 0; i < 75000; i++) {
+function seedDrivers (num) {
+  let promises = [];
+
+  for (let i = 0; i < num; i++) {
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
     let email = faker.internet.email();
@@ -20,7 +24,8 @@ function seedDrivers () {
     let number = faker.phone.phoneNumberFormat(1);
     let imageUrl = faker.image.imageUrl();
     let rating = Math.round((Math.random() + 4) * 10) / 10;
-    knex(`drivers`).insert({
+
+    let promise = knex(`drivers`).insert({
       first_name: `${firstName}`,
       last_name: `${lastName}`,
       email: `${email}`,
@@ -29,107 +34,143 @@ function seedDrivers () {
       picture: `${imageUrl}`,
       rating: `${rating}`
 
-    })
-    .then((data) => {
-      count ++;
-    })
+    });
+    promises.push(promise);
+    // .then((data) => {
+    //   count ++;
+    // })
   }
+  return Promise.all(promises);
 };
-function run (num = 1) {
-  for (let i = 0; i < num; i++) {
-    seedDrivers();
-  }
-  return;
-};
-run();
+seedDrivers(150000).then((data) => {
+  console.timeEnd('start');
+  count++;
+});
+// function run (num = 1) {
+//   for (let i = 0; i < num; i++) {
+//     seedDrivers();
+//   }
+//   return;
+// };
+// run(2);
+//
+// console.log('done');
+//
+// const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'white', 'black', 'grey', 'silver'];
+// const vehicles = {
+//   0: {Toyota: ['Camry', 'Corolla', 'Prius', 'Sienna', 'Highlander', 'Rav4']},
+//   1: {Honda: ['Accord', 'Civic', 'Odyssey', 'Element', 'Pilot', 'CR-V', 'Fit']},
+//   2: {Ford: ['Escape', 'Explorer', 'Focus', 'Taurus', 'Fiesta', 'Edge']},
+//   3: {Cadillac: ['Escalade', 'CTS', 'ATS']},
+//   4: {Chevrolet: ['Volt', 'Spark', 'Cruze', 'Malibu', 'Impala', 'Equinox', 'Tahoe', 'Suburban']},
+//   5: {BMW: ['328i', '330i', '335i', 'X3', 'X5']},
+//   6: {Nissan: ['Altima', 'Maxima', 'Pathfinder', 'Sentra', 'Rogue']},
+//   7: {Hyundai: ['Elantra', 'Genesis', 'Sonata', 'Santa Fe']},
+//   8: {Mazda: ['3', '5', 'CX-5', 'CX-3']},
+//   9: {Dodge: ['Charger', 'Challenger', 'Grand Caravan', 'Durango']},
+//   10: {Volkswagen: ['Beetle', 'Golf', 'Passat', 'Jetta', 'Tiguan']},
+//   11: {Jeep: ['Wrangler', 'Liberty', 'Compass', 'Grand Cherokee', 'Renegade']},
+//   12: {'Mercedes-Benz': ['C 300', 'C 350', 'GLA 250']},
+//   13: {Lexus: ['IS 250', 'IS 350', 'ES 350', 'RX']},
+// }
+// const letters = ['A', 'B', 'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+// 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+// const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+// const capacities = [1, 4, 6];
+//
+// function seedVehicles(num) {
+//   for (let i = 0; i < num; i++) {
+//     let makeKey = Math.floor(Math.random() * 14).toString();
+//     let make = Object.keys(vehicles[makeKey])[0];
+//     let model = vehicles[makeKey][make][(Math.floor(Math.random() * vehicles[makeKey][make].length))];
+//     let color = colors[Math.floor(Math.random() * colors.length)];
+//     let license = numbers[Math.floor(Math.random() * numbers.length)] +
+//     letters[Math.floor(Math.random() * letters.length)] +
+//     letters[Math.floor(Math.random() * letters.length)] +
+//     letters[Math.floor(Math.random() * letters.length)] +
+//     numbers[Math.floor(Math.random() * numbers.length)] +
+//     numbers[Math.floor(Math.random() * numbers.length)] +
+//     numbers[Math.floor(Math.random() * numbers.length)];
+//     let year = parseInt(JSON.stringify(faker.date.past(10)).slice(1, 5));
+//     let imageUrl = faker.image.imageUrl();
+//     let capacity = capacities[Math.floor(Math.random() * capacities.length)];
+//
+//     knex(`vehicles`).insert({
+//       license_plate: `${license}`,
+//       make: `${make}`,
+//       model: `${model}`,
+//       color: `${color}`,
+//       year: `${year}`,
+//       picture: `${imageUrl}`,
+//       capacity: `${capacity}`
+//     })
+//     .then((data) => {
+//       count ++;
+//       //console.log('inserted!!!!');
+//     })
+//   }
+// }
+// seedVehicles(10000);
+console.timeEnd('start');
+//
+// function seedJoin () {
+//   const round1 = [];
+//   const round2 = [];
+//   const round3 = [];
+//   const round4 = [];
+//   const round5 = [];
+//   const round6 = [];
+//   const round7 = [];
+//   const round8 = [];
+//   const round9 = [];
+//   const round10 = [];
+//
+//   for (let i = 1; i < 100000; i++) {
+//     round1.push(i);
+//   }
+//   for (let i = 1; i < round1.length; i++) {
+//     round2.push(i + 100000);
+//     round3.push(i + 200000);
+//     round4.push(i + 300000);
+//     round5.push(i + 400000);
+//     round6.push(i + 500000);
+//     round7.push(i + 600000);
+//     round8.push(i + 700000);
+//     round9.push(i + 800000);
+//     round10.push(i + 900000);
+//   }
+//   let index1 = Math.floor(Math.random() * 10);
+//   let index2 = Math.floor(Math.random() * 10);
+//   let index11 = Math.floor(Math.random() * round1.length);
+//   let index22 = Math.floor(Math.random() * round1.length);
+//
+// }
 
-console.log('done');
 
-const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'white', 'black', 'grey', 'silver'];
-const vehicles = {
-  0: {Toyota: ['Camry', 'Corolla', 'Prius', 'Sienna', 'Highlander', 'Rav4']},
-  1: {Honda: ['Accord', 'Civic', 'Odyssey', 'Element', 'Pilot', 'CR-V', 'Fit']},
-  2: {Ford: ['Escape', 'Explorer', 'Focus', 'Taurus', 'Fiesta', 'Edge']},
-  3: {Cadillac: ['Escalade', 'CTS', 'ATS']},
-  4: {Chevrolet: ['Volt', 'Spark', 'Cruze', 'Malibu', 'Impala', 'Equinox', 'Tahoe', 'Suburban']},
-  5: {BMW: ['328i', '330i', '335i', 'X3', 'X5']},
-  6: {Nissan: ['Altima', 'Maxima', 'Pathfinder', 'Sentra', 'Rogue']},
-  7: {Hyundai: ['Elantra', 'Genesis', 'Sonata', 'Santa Fe']},
-  8: {Mazda: ['3', '5', 'CX-5', 'CX-3']},
-  9: {Dodge: ['Charger', 'Challenger', 'Grand Caravan', 'Durango']},
-  10: {Volkswagen: ['Beetle', 'Golf', 'Passat', 'Jetta', 'Tiguan']},
-  11: {Jeep: ['Wrangler', 'Liberty', 'Compass', 'Grand Cherokee', 'Renegade']},
-  12: {'Mercedes-Benz': ['C 300', 'C 350', 'GLA 250']},
-  13: {Lexus: ['IS 250', 'IS 350', 'ES 350', 'RX']},
-}
-const letters = ['A', 'B', 'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-const capacities = [1, 4, 6];
 
-function seedVehicles(num) {
-  for (let i = 0; i < num; i++) {
-    let makeKey = Math.floor(Math.random() * 14).toString();
-    let make = Object.keys(vehicles[makeKey])[0];
-    let model = vehicles[makeKey][make][(Math.floor(Math.random() * vehicles[makeKey][make].length))];
-    let color = colors[Math.floor(Math.random() * colors.length)];
-    let license = numbers[Math.floor(Math.random() * numbers.length)] +
-    letters[Math.floor(Math.random() * letters.length)] +
-    letters[Math.floor(Math.random() * letters.length)] +
-    letters[Math.floor(Math.random() * letters.length)] +
-    numbers[Math.floor(Math.random() * numbers.length)] +
-    numbers[Math.floor(Math.random() * numbers.length)] +
-    numbers[Math.floor(Math.random() * numbers.length)];
-    let year = parseInt(JSON.stringify(faker.date.past(10)).slice(1, 5));
-    let imageUrl = faker.image.imageUrl();
-    let capacity = capacities[Math.floor(Math.random() * capacities.length)];
 
-    knex(`vehicles`).insert({
-      license_plate: `${license}`,
-      make: `${make}`,
-      model: `${model}`,
-      color: `${color}`,
-      year: `${year}`,
-      picture: `${imageUrl}`,
-      capacity: `${capacity}`
-    })
-    .then((data) => {
-      count ++;
-      //console.log('inserted!!!!');
-    })
-  }
-}
-seedVehicles(1000);
-
-function seedJoin () {
-  const round1 = [];
-  const round2 = [];
-  const round3 = [];
-  const round4 = [];
-  const round5 = [];
-  const round6 = [];
-  const round7 = [];
-  const round8 = [];
-  const round9 = [];
-  const round10 = [];
-
-  for (let i = 1; i < 100000; i++) {
-    round1.push(i);
-  }
-  for (let i = 1; i < round1.length; i++) {
-    round2.push(i + 100000);
-    round3.push(i + 200000);
-    round4.push(i + 300000);
-    round5.push(i + 400000);
-    round6.push(i + 500000);
-    round7.push(i + 600000);
-    round8.push(i + 700000);
-    round9.push(i + 800000);
-    round10.push(i + 900000);
-  }
-  let index1 = Math.floor(Math.random() * 10);
-  let index2 = Math.floor(Math.random() * 10);
-  let index11 = Math.floor(Math.random() * round1.length);
-  let index22 = Math.floor(Math.random() * round1.length);
-
-}
+// function seedJoinTable () {
+//   //  need to generate random number for driverIds
+//   //  need to generate random number for vehicleIds
+//   const array = [];
+//   for (let i = 0; i < 10000000; i++) {
+//     array.push(i);
+//   }
+//   // console.log(array);
+//   for (let i = 0; i < 100000; i++) {
+//     let driverIdx = Math.floor(Math.random() * 10000000);
+//     let vehicleIdx = Math.floor(Math.random() * 10000000);
+//     knex('drivers_vehicles').insert({
+//       driver_id: driverIdx,
+//       vehicle_id: vehicleIdx
+//     })
+//       .then((data) => {
+//         count += 0;
+//       })
+//   }
+//
+//
+//
+//
+// }
+// seedJoinTable();
