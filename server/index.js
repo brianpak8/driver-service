@@ -7,6 +7,7 @@ const promise = require('bluebird');
 const db = require('./dbconnection.js');
 const query = require('./queries.js');
 const request = require('./bookingrequests.js');
+const seed = require('../seed.js');
 
 
 app.use(bodyParser.json());
@@ -106,8 +107,10 @@ app.patch('/api/v1/ride/end', (req, res) => {
 //
 // });
 
+app.get('/', (req, res) => {
+  seed.seedAvailable();
 
-
+})
 // just a test
 // app.get('/', (req, res) => {
 //   // knex(`drivers`).insert({

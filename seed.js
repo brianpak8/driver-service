@@ -192,70 +192,316 @@ let count = -100000000;
 //   }
 // }
 
-function seedJoinTable () {
-  //  need to generate random number for driverIds
-  //  need to generate random number for vehicleIds
-  const array = [];
-  for (let i = 0; i < 10000000; i++) {
-    array.push(i);
-  }
-  const lowerArr = array.slice(0, 1000);
-  const slightlyLarger = array.slice(1000, 100000);
+// function seedJoinTable () {
+//   //  need to generate random number for driverIds
+//   //  need to generate random number for vehicleIds
+//   const array = [];
+//   for (let i = 0; i < 10000000; i++) {
+//     array.push(i);
+//   }
+//   const lowerArr = array.slice(0, 1000);
+//   const slightlyLarger = array.slice(1000, 100000);
+//
+//   // console.log(array);
+//   for (let i = 0; i < 120000; i++) {
+//     let driverIdx = Math.floor(Math.random() * 10000000);
+//     let vehicleIdx = Math.floor(Math.random() * 10000000);
+//     knex('drivers_vehicles').insert({
+//       driver_id: driverIdx,
+//       vehicle_id: vehicleIdx
+//     })
+//       .then((data) => {
+//         count += 0;
+//       })
+//   }
+// }
 
-  // console.log(array);
-  for (let i = 0; i < 120000; i++) {
-    let driverIdx = Math.floor(Math.random() * 10000000);
-    let vehicleIdx = Math.floor(Math.random() * 10000000);
-    knex('drivers_vehicles').insert({
-      driver_id: driverIdx,
-      vehicle_id: vehicleIdx
-    })
-      .then((data) => {
-        count += 0;
-      })
-  }
-}
-
-/*
+// function seedJoinTable() {
+//   let driverIdx;
+//   let vehicleIdx;
+//   for (let i = 0; i < 110000; i++) {
+//     let idx = Math.floor(Math.random() * 10);
+//     if (idx <= 1) {
+//       driverIdx = Math.floor(Math.random() * 10000);
+//       vehicleIdx = Math.floor(Math.random() * 10000);
+//     } else if (idx === 7) {
+//       driverIdx = Math.floor(Math.random() * 100000);
+//       vehicleIdx = Math.floor(Math.random() * 100000);
+//     } else {
+//       driverIdx = Math.floor(Math.random() * 10000000);
+//       vehicleIdx = Math.floor(Math.random() * 10000000);
+//     }
+//     knex('drivers_vehicles').insert({
+//       driver_id: driverIdx,
+//       vehicle_id: vehicleIdx
+//     })
+//       .then((data) => {
+//         count += 0;
+//       })
+//       .catch((err) => {
+//         count -= 0;
+//       })
+//
+//   }
+// }
 // for small indexes
-function seedJoinTable () {
-  //  need to generate random number for driverIds
-  //  need to generate random number for vehicleIds
-  const array = [];
-  for (let i = 0; i < 10000000; i++) {
-    array.push(i);
-  }
-  const lowerArr = array.slice(0, 1000);
-  const slightlyLarger = array.slice(1000, 100000);
+// function seedJoinTable () {
+//   //  need to generate random number for driverIds
+//   //  need to generate random number for vehicleIds
+//   const array = [];
+//   for (let i = 0; i < 10000000; i++) {
+//     array.push(i);
+//   }
+//   const lowerArr = array.slice(0, 1000);
+//   const slightlyLarger = array.slice(1000, 100000);
+//
+//   // console.log(array);
+//   for (let i = 0; i < 120000; i++) {
+//     let idx = Math.floor(Math.random(10));
+//     if (idx <= 3) {
+//       let driverIdx = Math.floor(Math.random() * 1000);
+//       let vehicleIdx = Math.floor(Math.random() * 1000);
+//       knex('drivers_vehicles').insert({
+//         driver_id: driverIdx,
+//         vehicle_id: vehicleIdx
+//       })
+//         .then((data) => {
+//           count += 0;
+//         })
+//     } else {
+//       let driverIdx = Math.floor(Math.random() * 10000000);
+//       let vehicleIdx = Math.floor(Math.random() * 10000000);
+//       knex('drivers_vehicles').insert({
+//         driver_id: driverIdx,
+//         vehicle_id: vehicleIdx
+//       })
+//         .then((data) => {
+//           count += 0;
+//         })
+//     }
+//     // knex('drivers_vehicles').insert({
+//     //   driver_id: driverIdx,
+//     //   vehicle_id: vehicleIdx
+//     // })
+//     //   .then((data) => {
+//     //     count += 0;
+//     //   })
+//   }
+// }
 
-  // console.log(array);
-  for (let i = 0; i < 120000; i++) {
-    let idx = Math.floor(Math.random(10));
-    if (idx <= 3) {
-      var driverIdx = Math.floor(Math.random() * 1000);
-      var vehicleIdx = Math.floor(Math.random() * 1000);
-      knex('drivers_vehicles').insert({
-        driver_id: driverIdx,
-        vehicle_id: vehicleIdx
+// seedJoinTable();
+
+const seedAvailable = () => {
+  console.log('ahaaaaaa');
+  const type = ['x', 'xl', 'black', 'pool', 'select'];
+  const locations = ['944 Market Street, SF, CA',
+  'Ferry Building, SF, CA', 'California Academy of Sciences, SF, CA',
+  'Lands End, SF, CA', 'Chrissy Field, SF, CA', 'San Francisco Zoo, SF, CA',
+  'Coit Tower, SF, CA', 'Lombard Street, SF, CA', 'AT&T Park, SF, CA',
+  'Dynamo Donut & Coffee, SF, CA'];
+  let status;
+  knex('drivers_vehicles')
+  .select()
+  .where('id', '<', 8300000)
+  .andWhere('id', '>', 8200000)
+  .then((data) => {
+    data.forEach((record) => {
+      let ldx = Math.floor(Math.random() * locations.length);
+      let idx = Math.floor(Math.random() * type.length);
+      let rdx = Math.floor(Math.random() * 721473);
+      if (idx % 2 === 0) {
+        status = 0;
+        rdx = null;
+      } else {
+        status = 1;
+      }
+      knex('available_rides').insert({
+        driver_vehicle_id: record.id,
+        driver_id: record.driver_id,
+        vehicle_id: record.vehicle_id,
+        status: status,
+        current_ride_id: rdx,
+        type: type[idx],
+        location: locations[ldx]
       })
-        .then((data) => {
-          count += 0;
-        })
-    } else {
-      var driverIdx = Math.floor(Math.random() * 10000000);
-      var vehicleIdx = Math.floor(Math.random() * 10000000);
-    }
-    knex('drivers_vehicles').insert({
-      driver_id: driverIdx,
-      vehicle_id: vehicleIdx
-    })
-      .then((data) => {
+      .then((success) => {
         count += 0;
       })
-  }
+    });
+  })
 }
-*/
-seedJoinTable();
-
+seedAvailable();
 
 console.timeEnd('start');
+
+// const seedAvailable2 = () => {
+//   console.log('ahaaaaaa');
+//   const type = ['x', 'xl', 'black', 'pool', 'select'];
+//   const locations = ['944 Market Street, SF, CA',
+//   'Ferry Building, SF, CA', 'California Academy of Sciences, SF, CA',
+//   'Lands End, SF, CA', 'Chrissy Field, SF, CA', 'San Francisco Zoo, SF, CA',
+//   'Coit Tower, SF, CA', 'Lombard Street, SF, CA', 'AT&T Park, SF, CA',
+//   'Dynamo Donut & Coffee, SF, CA'];
+//   let status;
+//   knex('drivers_vehicles')
+//   .select()
+//   .where('id', '<', 200000)
+//   .andWhere('id', '>', 100000)
+//   .then((data) => {
+//     data.forEach((record) => {
+//       let ldx = Math.floor(Math.random() * locations.length);
+//       let idx = Math.floor(Math.random() * type.length);
+//       let rdx = Math.floor(Math.random() * 721473);
+//       if (idx % 2 === 0) {
+//         status = 0;
+//         rdx = null;
+//       } else {
+//         status = 1;
+//       }
+//       knex('available_rides').insert({
+//         driver_vehicle_id: record.id,
+//         driver_id: record.driver_id,
+//         vehicle_id: record.vehicle_id,
+//         status: status,
+//         current_ride_id: rdx,
+//         type: type[idx],
+//         location: locations[ldx]
+//       })
+//       .then((success) => {
+//         count += 0;
+//       })
+//     });
+//   })
+// }
+// seedAvailable2();
+// const seedAvailable3 = () => {
+//   console.log('ahaaaaaa');
+//   const type = ['x', 'xl', 'black', 'pool', 'select'];
+//   const locations = ['944 Market Street, SF, CA',
+//   'Ferry Building, SF, CA', 'California Academy of Sciences, SF, CA',
+//   'Lands End, SF, CA', 'Chrissy Field, SF, CA', 'San Francisco Zoo, SF, CA',
+//   'Coit Tower, SF, CA', 'Lombard Street, SF, CA', 'AT&T Park, SF, CA',
+//   'Dynamo Donut & Coffee, SF, CA'];
+//   let status;
+//   knex('drivers_vehicles')
+//   .select()
+//   .where('id', '<', 300000)
+//   .andWhere('id', '>', 200000)
+//   .then((data) => {
+//     data.forEach((record) => {
+//       let ldx = Math.floor(Math.random() * locations.length);
+//       let idx = Math.floor(Math.random() * type.length);
+//       let rdx = Math.floor(Math.random() * 721473);
+//       if (idx % 2 === 0) {
+//         status = 0;
+//         rdx = null;
+//       } else {
+//         status = 1;
+//       }
+//       knex('available_rides').insert({
+//         driver_vehicle_id: record.id,
+//         driver_id: record.driver_id,
+//         vehicle_id: record.vehicle_id,
+//         status: status,
+//         current_ride_id: rdx,
+//         type: type[idx],
+//         location: locations[ldx]
+//       })
+//       .then((success) => {
+//         count += 0;
+//       })
+//     });
+//   })
+// }
+// seedAvailable3();
+//
+//
+// const seedAvailable4 = () => {
+//   console.log('ahaaaaaa');
+//   const type = ['x', 'xl', 'black', 'pool', 'select'];
+//   const locations = ['944 Market Street, SF, CA',
+//   'Ferry Building, SF, CA', 'California Academy of Sciences, SF, CA',
+//   'Lands End, SF, CA', 'Chrissy Field, SF, CA', 'San Francisco Zoo, SF, CA',
+//   'Coit Tower, SF, CA', 'Lombard Street, SF, CA', 'AT&T Park, SF, CA',
+//   'Dynamo Donut & Coffee, SF, CA'];
+//   let status;
+//   knex('drivers_vehicles')
+//   .select()
+//   .where('id', '<', 400000)
+//   .andWhere('id', '>', 300000)
+//   .then((data) => {
+//     data.forEach((record) => {
+//       let ldx = Math.floor(Math.random() * locations.length);
+//       let idx = Math.floor(Math.random() * type.length);
+//       let rdx = Math.floor(Math.random() * 721473);
+//       if (idx % 2 === 0) {
+//         status = 0;
+//         rdx = null;
+//       } else {
+//         status = 1;
+//       }
+//       knex('available_rides').insert({
+//         driver_vehicle_id: record.id,
+//         driver_id: record.driver_id,
+//         vehicle_id: record.vehicle_id,
+//         status: status,
+//         current_ride_id: rdx,
+//         type: type[idx],
+//         location: locations[ldx]
+//       })
+//       .then((success) => {
+//         count += 0;
+//       })
+//     });
+//   })
+// }
+// seedAvailable4();
+//
+// const seedAvailable5 = () => {
+//   console.log('ahaaaaaa');
+//   const type = ['x', 'xl', 'black', 'pool', 'select'];
+//   const locations = ['944 Market Street, SF, CA',
+//   'Ferry Building, SF, CA', 'California Academy of Sciences, SF, CA',
+//   'Lands End, SF, CA', 'Chrissy Field, SF, CA', 'San Francisco Zoo, SF, CA',
+//   'Coit Tower, SF, CA', 'Lombard Street, SF, CA', 'AT&T Park, SF, CA',
+//   'Dynamo Donut & Coffee, SF, CA'];
+//   let status;
+//   knex('drivers_vehicles')
+//   .select()
+//   .where('id', '<', 500000)
+//   .andWhere('id', '>', 400000)
+//   .then((data) => {
+//     data.forEach((record) => {
+//       let ldx = Math.floor(Math.random() * locations.length);
+//       let idx = Math.floor(Math.random() * type.length);
+//       let rdx = Math.floor(Math.random() * 721473);
+//       if (idx % 2 === 0) {
+//         status = 0;
+//         rdx = null;
+//       } else {
+//         status = 1;
+//       }
+//       knex('available_rides').insert({
+//         driver_vehicle_id: record.id,
+//         driver_id: record.driver_id,
+//         vehicle_id: record.vehicle_id,
+//         status: status,
+//         current_ride_id: rdx,
+//         type: type[idx],
+//         location: locations[ldx]
+//       })
+//       .then((success) => {
+//         count += 0;
+//       })
+//     });
+//   })
+// }
+// seedAvailable5();
+
+
+
+module.exports.seedAvailable = seedAvailable;
+// module.exports.seedAvailable2 = seedAvailable2;
+// module.exports.seedAvailable3 = seedAvailable3;
+// module.exports.seedAvailable4 = seedAvailable4;
+// module.exports.seedAvailable5 = seedAvailable5;
