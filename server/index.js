@@ -107,10 +107,10 @@ app.patch('/api/v1/ride/end', (req, res) => {
 //
 // });
 
-app.get('/', (req, res) => {
-  seed.seedAvailable();
-
-})
+// app.get('/', (req, res) => {
+//   seed.seedAvailable();
+//
+// })
 // just a test
 // app.get('/', (req, res) => {
 //   // knex(`drivers`).insert({

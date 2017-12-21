@@ -25,7 +25,7 @@ const cancelAndUpdate = (req, res) => {
 
 const endRide = (req, res) => {
   let driverId = req.body.driverId;
-  axios.patch('insertBookingEndpointHere', {
+  axios.patch('/endride', {
     driverId: driverId,
     status: 0
   })
