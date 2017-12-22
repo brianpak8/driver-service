@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const faker = require('faker');
 const promise = require('bluebird');
+const redis = require('redis');
 const db = require('./dbconnection.js');
 const query = require('./queries.js');
 const request = require('./bookingrequests.js');
@@ -17,12 +18,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // pricing service requests for current number of drivers available
 // tested
 
+// app.get('/api/v1/drivers/count', (req, res) => {
+//   // console.log('is this undefined?', query.driverCount);
+//   db.knex('available_rides')
+//   .count()
+//   .then((data) => {
+//     res.end(JSON.stringify({count: data}));
+//   })
+// });
 app.get('/api/v1/drivers/count', (req, res) => {
   // console.log('is this undefined?', query.driverCount);
   query.driverCount()
     .then((data) => {
       console.log('i am a teapot short and stout', data);
-      res.end(JSON.stringify({count: data.length}));
+      res.end(JSON.stringify(data[0]));
     })
 });
 

@@ -19,6 +19,7 @@
   "dependencies": {
     "aws-sdk": "^2.173.0",
     "axios": "^0.17.1",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "express": "^4.16.2",
@@ -27,6 +28,7 @@
     "mocha": "^4.0.1",
     "mysql": "^2.15.0",
     "node": "^9.2.0",
-    "nodemon": "^1.12.5"
+    "nodemon": "^1.12.5",
+    "redis": "^2.8.0"
   }
 }

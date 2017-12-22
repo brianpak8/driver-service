@@ -1,7 +1,13 @@
 const db = require('./dbconnection.js');
 const axios = require('axios');
 
-const driverCount = () => db.knex.select().table('available_rides')
+// const driverCount = () => db.knex.select()
+//   .table('available_rides')
+//   .where('status', 0)
+
+const driverCount = () => db.knex('available_rides')
+  .count()
+  .where('status', '=', 0)
 
 const getDrivers = () => db.knex('available_rides')
   .innerJoin('drivers', 'available_rides.driver_id', '=', 'drivers.id')
