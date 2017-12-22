@@ -31,12 +31,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // });
 app.get('/api/v1/drivers/count', (req, res) => {
   // console.log('is this undefined?', query.driverCount);
-  query.driverCount()
-    .then((data) => {
-      console.log('i am a teapot short and stout', data[0]['count(*)']);
-      client.setAsync('count', data[0]['count(*)']);
-      res.end(JSON.stringify({count: data[0]['count(*)']}));
-    })
+  client.getAsync('count').then((data) => {
+    if (data !== 'nil') {
+      res.end(JSON.stringify(data));
+    } else {
+      query.driverCount()
+      .then((data) => {
+        console.log('i am a teapot short and stout', data[0]['count(*)']);
+        client.setAsync('count', data[0]['count(*)']);
+        res.end(JSON.stringify({count: data[0]['count(*)']}));
+      })
+    }
+  })
 });
 
 // booking service requests for driver data to match with riders
