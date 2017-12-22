@@ -45,6 +45,10 @@ app.get('/api/v1/drivers/count', (req, res) => {
 app.get('/api/v1/drivers/available', (req, res) => {
   query.getDrivers()
     .then((data) => {
+      data.forEach((record) => {
+        delete record.email;
+        delete record.password;
+      })
       // console.log('look at the data ----->', data);
       res.end(JSON.stringify(data));
     })
