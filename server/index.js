@@ -5,6 +5,9 @@ const axios = require('axios');
 const faker = require('faker');
 const promise = require('bluebird');
 const redis = require('redis');
+promise.promisifyAll(redis.RedisClient.prototype);
+promise.promisifyAll(redis.Multi.prototype);
+const client = redis.createClient();
 const db = require('./dbconnection.js');
 const query = require('./queries.js');
 const request = require('./bookingrequests.js');
@@ -30,8 +33,9 @@ app.get('/api/v1/drivers/count', (req, res) => {
   // console.log('is this undefined?', query.driverCount);
   query.driverCount()
     .then((data) => {
-      console.log('i am a teapot short and stout', data);
-      res.end(JSON.stringify(data[0]));
+      console.log('i am a teapot short and stout', data[0]['count(*)']);
+      client.setAsync('count', data[0]['count(*)']);
+      res.end(JSON.stringify({count: data[0]['count(*)']}));
     })
 });
 
