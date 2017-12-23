@@ -41,6 +41,7 @@ app.get('/api/v1/drivers/count', (req, res) => {
         client.setAsync('count', data[0]['count(*)']);
         res.end(JSON.stringify({count: data[0]['count(*)']}));
       })
+
     }
   })
 });
@@ -49,12 +50,31 @@ app.get('/api/v1/drivers/count', (req, res) => {
 // tested
 
 app.get('/api/v1/drivers/available', (req, res) => {
-  query.getDrivers()
-    .then((data) => {
-      // console.log('look at the data ----->', data);
+  client.getAsync('drivers').then((data) => {
+    if (data !== null) {
+      console.log('in the if', data);
       res.end(JSON.stringify(data));
-    })
+    } else {
+      query.getDrivers()
+      .then((data) => {
+        console.log(data);
+        client.setAsync('drivers', JSON.stringify(data));
+        // console.log('look at the data ----->', data);
+        res.end(JSON.stringify(data));
+      })
+
+    }
+  })
 })
+
+
+// app.get('/api/v1/drivers/available', (req, res) => {
+//   query.getDrivers()
+//     .then((data) => {
+//       // console.log('look at the data ----->', data);
+//       res.end(JSON.stringify(data));
+//     })
+// })
 
 // new route for drivers to update position
 // tested
