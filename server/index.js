@@ -52,21 +52,32 @@ app.get('/api/v1/drivers/count', (req, res) => {
 app.get('/api/v1/drivers/available', (req, res) => {
   client.getAsync('drivers').then((data) => {
     if (data !== null) {
-      console.log('in the if', data);
-      res.end(JSON.stringify(data));
+      console.log('plain data', typeof data, data);
+      console.log('parsed', typeof JSON.parse(data), Array.isArray(JSON.parse(data)), JSON.parse(data));
+      console.log('stringified', JSON.stringify(data));
+      //console.log('in the if', data);
+      res.end(data);
     } else {
       query.getDrivers()
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         client.setAsync('drivers', JSON.stringify(data));
         // console.log('look at the data ----->', data);
+        console.log('99999999999999', typeof data, Array.isArray(data), data);
         res.end(JSON.stringify(data));
       })
 
     }
   })
 })
-
+app.get('/api/v1/drivers/test', (req, res) => {
+  client.getAsync('drivers').then((data) => {
+    console.log('-----------------------', typeof JSON.parse(data));
+    console.log('++++++++++++++++', Array.isArray(JSON.parse(data)));
+    console.log(JSON.parse(data));
+    res.end(data);
+  })
+})
 
 // app.get('/api/v1/drivers/available', (req, res) => {
 //   query.getDrivers()
