@@ -18,7 +18,7 @@ const getDrivers = () => db.knex('available_rides')
   .where('status', 0)
   //  this limit is inserted to make the query faster and pervent the
   //  server from timing out
-  .limit('10')
+  .limit('10000')
 
 const updateLocation = (driver, location) => db.knex('available_rides')
   .where('driver_id', '=', driver)
