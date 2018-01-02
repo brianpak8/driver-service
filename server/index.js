@@ -122,13 +122,13 @@ app.post('/api/v1/ride', (req, res) => {
 
 //  client(driver) request to cancel a ride
 //  tested, but request to booking needs a correct endpoint
-  app.patch('/api/v1/cancel', (req, res) => {
-    let rideId = req.body.rideId;
-    let driver_vehicle_id = req.body.driver_vehicle_id;
-    query.cancelRide(rideId, driver_vehicle_id)
-      .then((record) => {
-        console.log('working');
-        request.cancelAndUpdate(req, res)
+app.patch('/api/v1/cancel', (req, res) => {
+  let rideId = req.body.rideId;
+  let driver_vehicle_id = req.body.driver_vehicle_id;
+  query.cancelRide(rideId, driver_vehicle_id)
+    .then((record) => {
+      console.log('working');
+      request.cancelAndUpdate(req, res)
       })
   })
 
