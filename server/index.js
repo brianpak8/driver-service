@@ -32,8 +32,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/api/v1/drivers/count', (req, res) => {
   // console.log('is this undefined?', query.driverCount);
   client.getAsync('count').then((data) => {
-    if (data !== 'nil') {
-      res.end(JSON.stringify(data));
+    if (data !== 'nil' && data !== null) {
+      // console.log('data, typeof data:', data, typeof data, data === 'null', data === 'nil', data === null);
+      res.end(JSON.stringify({count: data}));
     } else {
       query.driverCount()
       .then((data) => {
