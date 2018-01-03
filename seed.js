@@ -302,8 +302,8 @@ const seedAvailable = () => {
   let status;
   knex('drivers_vehicles')
   .select()
-  .where('id', '<', 8300000)
-  .andWhere('id', '>', 8200000)
+  .where('id', '<', 1600000)
+  .andWhere('id', '>', 1500000)
   .then((data) => {
     data.forEach((record) => {
       let ldx = Math.floor(Math.random() * locations.length);

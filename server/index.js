@@ -146,6 +146,13 @@ app.patch('/api/v1/ride/end', (req, res) => {
 
 })
 
+app.patch('/api/v1/test', (req, res) => {
+  let location = req.body.location;
+  let driverId = req.body.driverId;
+  client.hsetAsync(driverId, 'location', location).then((data) => {
+    console.log(data);
+  });
+})
 
 //
 // // client login that changes status of driver
@@ -217,6 +224,7 @@ app.patch('/api/v1/ride/end', (req, res) => {
 //
 // //res.send();
 // });
+
 
 
 app.listen(9100, () => {
