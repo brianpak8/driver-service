@@ -41,3 +41,4 @@ config.js
 .env
 client/dist/bundle.js
 test1.pem
+hello.yml
