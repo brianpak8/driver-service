@@ -42,10 +42,10 @@ let count = -100000000;
 //   }
 //   return Promise.all(promises);
 // };
-// // seedDrivers(50000).then((data) => {
-// //   console.timeEnd('start');
-// //   count++;
-// // });
+// seedDrivers(90000).then((data) => {
+//   console.timeEnd('start');
+//   count++;
+// });
 // seedDrivers(12000).then((data) => {
 //   console.timeEnd('start');
 //   count++;
@@ -106,7 +106,7 @@ let count = -100000000;
 //       model: `${model}`,
 //       color: `${color}`,
 //       year: `${year}`,
-//       picture: `${imageUrl}`,
+//       vehicle_picture: `${imageUrl}`,
 //       capacity: `${capacity}`
 //     })
 //     .then((data) => {
@@ -115,7 +115,7 @@ let count = -100000000;
 //     })
 //   }
 // }
-// seedVehicles(130000);
+// seedVehicles(60000);
 //
 // function seedJoin () {
 //   const round1 = [];
@@ -219,9 +219,9 @@ let count = -100000000;
 // function seedJoinTable() {
 //   let driverIdx;
 //   let vehicleIdx;
-//   for (let i = 0; i < 110000; i++) {
+//   for (let i = 0; i < 10000; i++) {
 //     let idx = Math.floor(Math.random() * 10);
-//     if (idx <= 1) {
+//     if (idx <= 2) {
 //       driverIdx = Math.floor(Math.random() * 10000);
 //       vehicleIdx = Math.floor(Math.random() * 10000);
 //     } else if (idx === 7) {
@@ -256,9 +256,9 @@ let count = -100000000;
 //   const slightlyLarger = array.slice(1000, 100000);
 //
 //   // console.log(array);
-//   for (let i = 0; i < 120000; i++) {
-//     let idx = Math.floor(Math.random(10));
-//     if (idx <= 3) {
+//   for (let i = 0; i < 15000; i++) {
+//     let idx = Math.floor(Math.random() * 10);
+//     if (idx <= 2) {
 //       let driverIdx = Math.floor(Math.random() * 1000);
 //       let vehicleIdx = Math.floor(Math.random() * 1000);
 //       knex('drivers_vehicles').insert({
@@ -290,6 +290,63 @@ let count = -100000000;
 // }
 
 // seedJoinTable();
+/*
+------------------------------------------------------------
+------------------------------------------------------------ */
+const uniqueDrivers = [];
+const uniqueVehicles = [];
+const makeUniques = () => {
+  for (let i = 0; i < 20000; i++) {
+    uniqueDrivers.push(i);
+    uniqueVehicles.push(i);
+  }
+  let counter1 = uniqueDrivers.length;
+  let counter2 = uniqueVehicles.length;
+
+    // While there are elements in the array
+    while (counter1 > 0) {
+        // Pick a random index
+      let index = Math.floor(Math.random() * counter1);
+
+        // Decrease counter by 1
+      counter1--;
+
+        // And swap the last element with it
+      let temp = uniqueDrivers[counter1];
+      uniqueDrivers[counter1] = uniqueDrivers[index];
+      uniqueDrivers[index] = temp;
+    }
+    while (counter2 > 0) {
+        // Pick a random index
+      let index = Math.floor(Math.random() * counter2);
+
+        // Decrease counter by 1
+      counter2--;
+
+        // And swap the last element with it
+      let temp = uniqueVehicles[counter2];
+      uniqueVehicles[counter2] = uniqueVehicles[index];
+      uniqueVehicles[index] = temp;
+    }
+
+};
+makeUniques();
+
+const seedJoinWithUniques = () => {
+  for (let i = 0; i < uniqueDrivers.length; i++) {
+    let driver = uniqueDrivers.pop();
+    let vehicle = uniqueVehicles.pop();
+    knex('drivers_vehicles').insert({
+      driver_id: driver,
+      vehicle_id: vehicle
+    })
+    .then((data) => {
+      count += 0;
+    })
+  }
+
+}
+seedJoinWithUniques();
 
 const seedAvailable = () => {
   console.log('ahaaaaaa');
@@ -302,8 +359,8 @@ const seedAvailable = () => {
   let status;
   knex('drivers_vehicles')
   .select()
-  .where('id', '<', 8300000)
-  .andWhere('id', '>', 8200000)
+  .where('id', '<', 50000)
+  .andWhere('id', '>', 30000)
   .then((data) => {
     data.forEach((record) => {
       let ldx = Math.floor(Math.random() * locations.length);
@@ -332,7 +389,11 @@ const seedAvailable = () => {
 }
 seedAvailable();
 
-console.timeEnd('start');
+/*
+---------------------------------
+--------------------------------- */
+
+// console.timeEnd('start');
 
 // const seedAvailable2 = () => {
 //   console.log('ahaaaaaa');
@@ -500,7 +561,7 @@ console.timeEnd('start');
 
 
 
-module.exports.seedAvailable = seedAvailable;
+// module.exports.seedAvailable = seedAvailable;
 // module.exports.seedAvailable2 = seedAvailable2;
 // module.exports.seedAvailable3 = seedAvailable3;
 // module.exports.seedAvailable4 = seedAvailable4;
