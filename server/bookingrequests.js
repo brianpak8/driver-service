@@ -1,4 +1,5 @@
 const axios = require('axios');
+const query = require('./queries.js');
 
 const cancelAndUpdate = (req, res) => {
   let rideId = req.body.rideId;
@@ -37,5 +38,24 @@ const endRide = (req, res) => {
   })
 }
 
+const updateLocations = () => {
+  // first query the cache for all locations
+  query.redisGetLocations((err, data) => {
+    axios.patch('/drivers/locations', {
+      locations: data
+    })
+    .then((responseCode) => {
+      console.log(responseCode);
+    })
+    .catch((err) => {
+      console.log('ahaha', err);
+    })
+  });
+
+  // send an http request
+}
+
+
 module.exports.cancelAndUpdate = cancelAndUpdate;
 module.exports.endRide = endRide;
+module.exports.updateLocations = updateLocations;

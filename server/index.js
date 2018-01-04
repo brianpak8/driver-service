@@ -94,19 +94,33 @@ app.patch('/api/v1/ride/end', (req, res) => {
   let driverId = req.body.driverId;
   query.endRide(rideId)
   .then((record) => {
-    // console.log('got to this spot');
     request.endRide(req, res);
   })
-
 })
 
 app.patch('/api/v1/test', (req, res) => {
-  let location = req.body.location;
-  let driverId = req.body.driverId;
-  client.hsetAsync(driverId, 'location', location);/*.then((data) => {
+  request.updateLocations((err, data) => {
     console.log(data);
-  });*/
+  });
+  // let location = req.body.location;
+  // let driverId = req.body.driverId;
+  // client.hsetAsync(driverId, 'location', location);/*.then((data) => {
+  //   console.log(data);
+  // });*/
 })
+
+// uncomment for periodic updates of driver locations for
+// booking service
+
+/*
+const updateLocations = () => {
+  console.log('teehee');
+  setTimeout(updateLocations, 60000);
+  request.updateLocations();
+};
+
+updateLocations();
+*/
 
 app.listen(9100, () => {
   console.log('listening on port 9100');

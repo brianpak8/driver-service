@@ -14,7 +14,9 @@ const redisGetDrivers = () => client.getAsync('drivers');
 
 const redisSetDrivers = (data) => client.setAsync('drivers', JSON.stringify(data));
 
-const redisSetLocation = (driver, location) => client.hsetAsync(driver, 'location', location);
+const redisSetLocation = (driver, location) => client.hsetAsync('locations', driver, location);
+
+const redisGetLocations = (cb) => client.hgetall('locations', cb);
 
 const driverCount = () => db.knex('available_rides')
   .count()
@@ -63,6 +65,7 @@ module.exports.redisSetCount = redisSetCount;
 module.exports.redisGetDrivers = redisGetDrivers;
 module.exports.redisSetDrivers = redisSetDrivers;
 module.exports.redisSetLocation = redisSetLocation;
+module.exports.redisGetLocations = redisGetLocations;
 module.exports.driverCount = driverCount;
 module.exports.getDrivers = getDrivers;
 module.exports.updateLocation = updateLocation;
