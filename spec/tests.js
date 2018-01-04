@@ -70,7 +70,7 @@ describe ('Database Schema', () => {
   });
 
 })
-
+//  should write into the schema file to be consistent if the database ever has to be reloaded
 describe ('database queries', () => {
   it('should be able to get driver data from a driverId', (done) => {
     db.knex('available_rides')
