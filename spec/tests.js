@@ -70,3 +70,23 @@ describe ('Database Schema', () => {
   });
 
 })
+
+describe ('database queries', () => {
+  it('should be able to get driver data from a driverId', (done) => {
+    db.knex('available_rides')
+    .select()
+    .where('id', 9)
+    .then((data) => {
+      console.log('here is the data', data);
+      console.log('----------------', data[0].driver_id);
+      db.knex('drivers')
+      .select()
+      .where('id', data[0].driver_id)
+      .then((answer) => {
+        expect(answer[0].first_name).to.equal('Will');
+        done();
+      })
+    })
+
+  })
+})
