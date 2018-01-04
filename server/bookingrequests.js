@@ -51,8 +51,6 @@ const updateLocations = () => {
       console.log('ahaha', err);
     })
   });
-
-  // send an http request
 }
 
 

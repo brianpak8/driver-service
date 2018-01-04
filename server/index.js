@@ -98,17 +98,6 @@ app.patch('/api/v1/ride/end', (req, res) => {
   })
 })
 
-app.patch('/api/v1/test', (req, res) => {
-  request.updateLocations((err, data) => {
-    console.log(data);
-  });
-  // let location = req.body.location;
-  // let driverId = req.body.driverId;
-  // client.hsetAsync(driverId, 'location', location);/*.then((data) => {
-  //   console.log(data);
-  // });*/
-})
-
 // uncomment for periodic updates of driver locations for
 // booking service
 
