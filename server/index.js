@@ -96,6 +96,7 @@ app.get('/api/v1/drivers/available', (req, res) => {
 app.patch('/api/v1/drivers/location', (req, res) => {
   let driver = req.body.driverId;
   let location = req.body.location;
+  client.hsetAsync(driver, 'location', location);
   query.updateLocation(driver, location)
     .then((data) => {
       console.log('ahahahahahahahaahahaha', data);
@@ -149,9 +150,9 @@ app.patch('/api/v1/ride/end', (req, res) => {
 app.patch('/api/v1/test', (req, res) => {
   let location = req.body.location;
   let driverId = req.body.driverId;
-  client.hsetAsync(driverId, 'location', location).then((data) => {
+  client.hsetAsync(driverId, 'location', location);/*.then((data) => {
     console.log(data);
-  });
+  });*/
 })
 
 //

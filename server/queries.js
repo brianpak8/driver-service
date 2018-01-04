@@ -13,8 +13,8 @@ const getDrivers = () => db.knex('available_rides')
   .innerJoin('drivers', 'available_rides.driver_id', '=', 'drivers.id')
   .innerJoin('vehicles', 'available_rides.vehicle_id', '=', 'vehicles.id')
   .select('available_rides.id', 'available_rides.driver_vehicle_id', 'driver_id', 'vehicle_id',
-  'status', 'type', 'location', 'license_plate', 'make', 'model', 'color', 'year', 'capacity', 'vehicles.picture',
-  'first_name', 'last_name', 'phone_number', 'drivers.picture', 'rating')
+  'status', 'type', 'location', 'license_plate', 'make', 'model', 'color', 'year', 'capacity', 'vehicle_picture',
+  'first_name', 'last_name', 'phone_number', 'picture', 'rating')
   .where('status', 0)
   //  this limit is inserted to make the query faster and pervent the
   //  server from timing out
