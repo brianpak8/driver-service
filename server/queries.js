@@ -1,9 +1,20 @@
 const db = require('./dbconnection.js');
 const axios = require('axios');
+const redis = require('redis');
+const promise = require('bluebird');
+promise.promisifyAll(redis.RedisClient.prototype);
+promise.promisifyAll(redis.Multi.prototype);
+const client = redis.createClient();
 
-// const driverCount = () => db.knex.select()
-//   .table('available_rides')
-//   .where('status', 0)
+const redisCount = () => client.getAsync('count');
+
+const redisSetCount = (data) => client.setAsync('count', data[0]['count(*)']);
+
+const redisGetDrivers = () => client.getAsync('drivers');
+
+const redisSetDrivers = (data) => client.setAsync('drivers', JSON.stringify(data));
+
+const redisSetLocation = (driver, location) => client.hsetAsync(driver, 'location', location);
 
 const driverCount = () => db.knex('available_rides')
   .count()
@@ -47,6 +58,11 @@ const endRide = (rideId) => db.knex('available_rides')
     status: 0
   })
 
+module.exports.redisCount = redisCount;
+module.exports.redisSetCount = redisSetCount;
+module.exports.redisGetDrivers = redisGetDrivers;
+module.exports.redisSetDrivers = redisSetDrivers;
+module.exports.redisSetLocation = redisSetLocation;
 module.exports.driverCount = driverCount;
 module.exports.getDrivers = getDrivers;
 module.exports.updateLocation = updateLocation;
