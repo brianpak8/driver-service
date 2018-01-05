@@ -77,8 +77,6 @@ describe ('database queries', () => {
     .select()
     .where('id', 9)
     .then((data) => {
-      console.log('here is the data', data);
-      console.log('----------------', data[0].driver_id);
       db.knex('drivers')
       .select()
       .where('id', data[0].driver_id)
@@ -87,6 +85,36 @@ describe ('database queries', () => {
         done();
       })
     })
-
+  })
+  it('should be able to select drivers not currently on a ride', (done) => {
+    db.knex('available_rides')
+    .select()
+    .where({
+      status: 0,
+      id: 4
+    })
+    .then((data) => {
+      expect(data[0].driver_id).to.equal(16289);
+      expect(data[0].vehicle_id).to.equal(19853);
+      done();
+    })
+  })
+  it('should allow for location updates', (done) => {
+    db.knex('available_rides')
+    .where('id', '=', 11)
+    .update({
+      location: 'Central Park, New York'
+    })
+    .then((data) => {
+      db.knex('available_rides')
+      .select()
+      .where({
+        id: 11
+      })
+      .then((response) => {
+        expect(response[0].location).to.equal('Central Park, New York');
+        done();
+      })
+    })
   })
 })
